@@ -12,33 +12,21 @@
 
 ## 前提条件
 
-- postgreSQL がインストール済でサービスが起動していること
-- .env ファイルを各々の環境に応じた設定にすること
-  - ← Todo: Docker ファイルを用意する
-
-## .env
-
-```yml
-# .env
-
-PORT=8080
-POSTGRES_USER=root      # ユーザー名
-POSTGRES_PW=root        # パスワード
-POSTGRES_DB=golang      # DB名
-POSTGRES_PORT=5432      # ポート
-POSTGRES_HOST=localhost # ホスト名
-SECRET=uu5pveql
-GO_ENV=dev
-API_DOMAIN=localhost
-FE_URL=http://localhost:5173
-```
+- Docker が実行できる環境
 
 ## 始め方
 
-windows の場合
+```bash
+docker-compose up -d --build
+```
+
+初回のみ（マイグレーション）
 
 ```bash
-set GO_ENV=dev
-go run migrate/migrate.go # 初回のみ
-go run ./main.go
+docker-compose exec app sh
+go run migrate/migrate.go
 ```
+
+## 動作確認
+
+http://localhost:8080 にアクセスして {"message":"Not Found"} が返ってきたら OK

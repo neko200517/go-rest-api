@@ -1,0 +1,32 @@
+version: "3.8"
+services:
+  app:
+    build:
+      context: .
+      dockerfile: ./build/app/Dockerfile
+    volumes:
+      - ./app:/usr/local/go/src/app
+    tty: true
+    depends_on:
+      - db
+    ports:
+      - 8080:8080
+
+  db:
+    build:
+      context: .
+      dockerfile: ./build/db/Dockerfile
+    ports:
+      - 5434:5432
+    environment:
+      POSTGRES_DB: test
+      POSTGRES_USER: test
+      POSTGRES_PASSWORD: test
+      TZ: Asia/Tokyo
+    restart: always
+    volumes:
+      - db-store:/var/lib/postgresql/data
+      - ./build/db/init:/docker-entrypoint-initdb.d
+
+volumes:
+  db-store:
